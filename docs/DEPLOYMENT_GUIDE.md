@@ -30,7 +30,9 @@ complete application on Render:
 
 The web service is the public entry point. Its nginx proxy routes `/api`,
 `/uploads`, and the presence stream to `alumniconnect-api` over Render's
-private service network.
+private service network. Render injects the API service's `hostport` into
+`API_UPSTREAM`; do not replace it with a Docker Compose hostname such as
+`alumniconnect-api:4000`.
 
 ### Free-tier limitations
 
