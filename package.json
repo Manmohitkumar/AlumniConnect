@@ -1,0 +1,35 @@
+{
+  "name": "alumniconnect",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AlumniConnect - one connected campus for alumni, students, universities and companies.",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm --workspace apps/api run dev",
+    "dev:web": "npm --workspace apps/web run dev",
+    "build": "npm --workspace apps/web run build",
+    "preview": "npm --workspace apps/web run preview",
+    "typecheck": "npm --workspace apps/web run typecheck && npm --workspace apps/api run typecheck",
+    "db:migrate": "npm --workspace apps/api run db:migrate",
+    "db:seed": "npm --workspace apps/api run db:seed",
+    "db:studio": "npm --workspace apps/api run db:studio",
+    "test:smoke": "npm --workspace apps/api run test:smoke",
+    "test:unit": "tsx tools/unit.ts",
+    "test:config": "node tools/config-check.mjs",
+    "test:ui": "node tools/audit-dashboards.mjs",
+    "test:rtl": "node tools/rtl-check.mjs",
+    "test:load": "node tools/load.mjs",
+    "backup": "node tools/backup.mjs",
+    "backup:verify": "node tools/verify-backup.mjs",
+    "restore:drill": "node tools/restore-drill.mjs",
+    "test:staging": "tsx tools/staging-check.ts",
+    "test:push-matrix": "node tools/push-matrix.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "puppeteer-core": "^23.11.1"
+  }
+}

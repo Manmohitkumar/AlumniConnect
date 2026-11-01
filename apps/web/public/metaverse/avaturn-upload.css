@@ -1,0 +1,142 @@
+/* Avaturn Upload Styles */
+.avaturn-container {
+    padding: 20px;
+    display: grid;
+    gap: 20px;
+}
+
+.avaturn-info {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.avaturn-upload-area {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--color-bg-2);
+}
+
+.avaturn-upload-area:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-hover);
+}
+
+.avaturn-upload-area.dragging {
+    border-color: var(--color-primary);
+    background: var(--color-bg-hover);
+    transform: scale(1.02);
+}
+
+.upload-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.upload-icon {
+    font-size: 48px;
+    color: var(--color-primary);
+    margin-bottom: 15px;
+}
+
+.upload-content h4 {
+    margin: 10px 0;
+    color: var(--color-text);
+}
+
+.file-hint {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.upload-instructions {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--color-bg-2);
+    border-radius: var(--radius-lg);
+    text-align: left;
+}
+
+.upload-instructions h4 {
+    margin-bottom: 10px;
+    color: var(--color-text);
+}
+
+.upload-instructions ol {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.upload-instructions li {
+    margin: 8px 0;
+    color: var(--color-text);
+}
+
+.upload-instructions a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.upload-instructions a:hover {
+    text-decoration: underline;
+}
+
+.preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: var(--color-bg-2);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-muted);
+}
+
+.preview-placeholder i {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+/* Loading state */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+}
+
+.loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--color-primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 1;
+}

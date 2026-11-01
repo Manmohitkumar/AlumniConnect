@@ -1,0 +1,90 @@
+name: alumniconnect
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-alumniconnect}
+      POSTGRES_USER: ${POSTGRES_USER:-alumniconnect}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env (copy deploy/.env.example)}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: '4000'
+      DATABASE_URL: postgresql://${POSTGRES_USER:-alumniconnect}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-alumniconnect}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env (copy deploy/.env.example)}
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      WEB_ORIGIN: ${APP_URL:-http://localhost:8080}
+      WEB_ORIGINS: ${APP_URL:-http://localhost:8080}
+      UPLOAD_DIR: /data/uploads
+      SMTP_URL: ${SMTP_URL:-}
+      ALERT_WEBHOOK_URL: ${ALERT_WEBHOOK_URL:-}
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-mailto:ops@your-domain}
+      # Upload scanning: start the optional clamav service with `--profile scan`.
+      CLAMAV_HOST: ${CLAMAV_HOST:-}
+      CLAMAV_PORT: ${CLAMAV_PORT:-3310}
+      CLAMAV_TIMEOUT_MS: ${CLAMAV_TIMEOUT_MS:-15000}
+      UPLOAD_SCAN_REQUIRED: ${UPLOAD_SCAN_REQUIRED:-false}
+      # External tracing: any OTLP/HTTP collector.
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      OTEL_SERVICE_NAME: ${OTEL_SERVICE_NAME:-alumniconnect-api}
+    volumes:
+      - upload-data:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - '${WEB_PORT:-8080}:80'
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  clamav:
+    image: clamav/clamav:stable
+    profiles: ['scan']
+    volumes:
+      - clamav-data:/var/lib/clamav
+    restart: unless-stopped
+
+  backup:
+    image: postgres:16-alpine
+    entrypoint: ['/bin/sh', '/scripts/backup-loop.sh']
+    environment:
+      PGHOST: db
+      PGUSER: ${POSTGRES_USER:-alumniconnect}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: ${POSTGRES_DB:-alumniconnect}
+      BACKUP_INTERVAL_SECONDS: ${BACKUP_INTERVAL_SECONDS:-86400}
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-7}
+    volumes:
+      - ./backups:/backups
+      - ./deploy:/scripts:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  upload-data:
+  clamav-data:

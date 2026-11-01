@@ -1,0 +1,94 @@
+/* Add to style.css */
+
+/* Notifications */
+.notification {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: var(--color-bg-2);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: all 0.2s ease;
+    min-width: 150px;
+    max-width: 250px;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.notification i {
+    font-size: 18px;
+}
+
+.notification.info i {
+    color: var(--color-primary);
+}
+
+.notification.success i {
+    color: var(--color-success);
+}
+
+.notification.warning i {
+    color: var(--color-warning);
+}
+
+.notification.error i {
+    color: var(--color-error);
+}
+
+.notification span {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Chat System Messages */
+.chat-message.system {
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-2);
+}
+
+.chat-message.system .message-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-message.system .message-icon i {
+    font-size: 16px;
+    color: var(--color-primary);
+}
+
+.chat-message.system.info .message-icon i {
+    color: var(--color-primary);
+}
+
+.chat-message.system.success .message-icon i {
+    color: var(--color-success);
+}
+
+.chat-message.system.warning .message-icon i {
+    color: var(--color-warning);
+}
+
+.chat-message.system.error .message-icon i {
+    color: var(--color-error);
+}
+
+.chat-message.system .message-text {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.chat-message.system .message-time {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}

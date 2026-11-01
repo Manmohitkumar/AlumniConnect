@@ -1,0 +1,54 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate Prisma client (SQLite dev schema)
+        run: npm --workspace apps/api run db:generate
+
+      - name: Check PostgreSQL schema is in sync
+        run: node tools/postgres-schema.mjs --check
+
+      - name: Typecheck API and web
+        run: npm run typecheck
+
+      - name: Build web
+        run: npm run build
+
+      - name: Unit suites
+        run: npm run test:unit
+
+      - name: Deployment config check
+        run: npm run test:config
+
+      - name: API smoke suite
+        run: npm run test:smoke
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build API image
+        run: docker build -f apps/api/Dockerfile -t alumniconnect-api:ci .
+
+      - name: Build web image
+        run: docker build -f apps/web/Dockerfile -t alumniconnect-web:ci .

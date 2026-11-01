@@ -1,0 +1,328 @@
+/* AlumniConnect palette for the standalone Metaverse Hub.
+   Loaded last: the base stylesheet uses translucent tint tokens as
+   backgrounds, which made the avatar modal and room headers see-through. */
+
+:root,
+[data-color-scheme="dark"] {
+  --ac-ink-950: #1A232E;
+  --ac-ink-900: #202C39;
+  --ac-ink-800: #283845;
+  --ac-ink-700: #2D3F4F;
+  --ac-ink-600: #324555;
+  --ac-ink-500: #3D5365;
+  --ac-cream: #F2D492;
+  --ac-beige: #F29559;
+  --ac-mist: #B8B08D;
+  --ac-ash: #9A9278;
+
+  --color-background: var(--ac-ink-900);
+  --color-surface: var(--ac-ink-800);
+  --color-bg-1: var(--ac-ink-700);
+  --color-bg-2: var(--ac-ink-600);
+  --color-bg-3: var(--ac-ink-500);
+  --color-bg-4: #3D5365;
+  --color-bg-5: #324555;
+  --color-bg-6: #3D5365;
+  --color-bg-7: #3D5365;
+  --color-bg-8: #324555;
+  --color-bg-hover: var(--ac-ink-600);
+  --color-bg-selected: rgba(242,149,89, 0.16);
+
+  --color-text: var(--ac-cream);
+  --color-text-secondary: var(--ac-mist);
+  --color-border: rgba(242,149,89, 0.18);
+  --color-card-border: rgba(242,149,89, 0.14);
+  --color-focus-ring: rgba(242,149,89, 0.4);
+
+  --color-primary: var(--ac-beige);
+  --color-primary-hover: #DD7A3D;
+  --color-primary-active: #B95F2B;
+  --color-primary-dark: #B95F2B;
+  --color-btn-primary-text: var(--ac-ink-900);
+  --color-secondary: rgba(184,176,141, 0.16);
+  --color-secondary-hover: rgba(184,176,141, 0.24);
+  --color-secondary-active: rgba(184,176,141, 0.3);
+
+  --color-error: #f0a4a4;
+  --color-success: #9fd3b4;
+  --color-warning: #e8c9a0;
+  --color-info: var(--ac-mist);
+}
+
+html,
+body {
+  background: var(--ac-ink-900);
+  color: var(--ac-cream);
+}
+
+.dashboard {
+  background:
+    radial-gradient(60rem 30rem at 50% -10%, rgba(242,149,89, 0.08), transparent 70%),
+    var(--ac-ink-900);
+}
+
+.dashboard-header h1 {
+  background: linear-gradient(135deg, var(--ac-beige), var(--ac-mist));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dashboard-subtitle {
+  color: var(--ac-mist);
+}
+
+.room-card {
+  background: var(--ac-ink-800);
+  border: 1px solid rgba(242,149,89, 0.14);
+}
+
+.room-card-header {
+  background: var(--ac-ink-700) !important;
+  border-bottom: 1px solid rgba(242,149,89, 0.14);
+}
+
+.room-card-header h2,
+.room-card-header h3 {
+  color: var(--ac-cream);
+}
+
+.room-card-body p {
+  color: var(--ac-mist);
+}
+
+.feature-tag {
+  background: rgba(242,149,89, 0.1);
+  border: 1px solid rgba(242,149,89, 0.18);
+  color: var(--ac-beige);
+}
+
+/* Buttons */
+.btn--primary,
+.enter-room-btn {
+  background: var(--ac-beige);
+  color: var(--ac-ink-900);
+  border: 1px solid var(--ac-beige);
+}
+
+.btn--primary:hover,
+.enter-room-btn:not(:disabled):hover {
+  background: var(--color-primary-hover);
+  color: var(--ac-ink-900);
+}
+
+.btn--secondary {
+  background: transparent;
+  border: 1px solid rgba(242,149,89, 0.24);
+  color: var(--ac-beige);
+}
+
+.btn--outline {
+  background: rgba(242,212,146, 0.04);
+  border: 1px solid rgba(184,176,141, 0.28);
+  color: var(--ac-mist);
+}
+
+.enter-room-btn:disabled {
+  background: var(--ac-ink-600);
+  border-color: transparent;
+  color: var(--ac-ash);
+}
+
+/* Avatar modal */
+.modal {
+  z-index: 10000;
+  background: rgba(16, 19, 31, 0.82);
+  backdrop-filter: blur(6px);
+}
+
+.modal-content {
+  background: var(--ac-ink-800);
+  border: 1px solid rgba(242,149,89, 0.16);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9);
+  color: var(--ac-cream);
+}
+
+.modal-header,
+.modal-footer {
+  background: var(--ac-ink-800);
+  border-color: rgba(242,149,89, 0.14);
+}
+
+.modal-header h2 {
+  color: var(--ac-cream);
+}
+
+.room-name {
+  color: var(--ac-beige);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tab-btn {
+  color: var(--ac-mist);
+}
+
+.tab-btn:hover {
+  background: var(--ac-ink-700);
+  color: var(--ac-cream);
+}
+
+.tab-btn.active {
+  background: var(--ac-beige);
+  color: var(--ac-ink-900);
+}
+
+.avatar-preset {
+  background: var(--ac-ink-700);
+  border: 2px solid transparent;
+}
+
+.avatar-preset:hover {
+  border-color: rgba(242,149,89, 0.28);
+}
+
+.avatar-preset.selected {
+  border-color: var(--ac-beige);
+  background: rgba(242,149,89, 0.12);
+}
+
+.avatar-preset span {
+  color: var(--ac-cream);
+}
+
+.model-badge {
+  background: var(--ac-beige);
+  color: var(--ac-ink-900);
+}
+
+.upload-area {
+  background: var(--ac-ink-700);
+  border-color: rgba(184,176,141, 0.32);
+  color: var(--ac-mist);
+}
+
+.upload-icon {
+  color: var(--ac-mist);
+}
+
+.upload-hint,
+.hint,
+.file-hint {
+  color: var(--ac-ash);
+}
+
+.avaturn-info h3,
+.ready-player-me h3 {
+  color: var(--ac-cream);
+}
+
+.avaturn-preview,
+.rpm-preview {
+  background: var(--ac-ink-700);
+  color: var(--ac-mist);
+}
+
+input,
+select,
+textarea,
+.form-control {
+  background: var(--ac-ink-900);
+  color: var(--ac-cream);
+  border: 1px solid rgba(242,149,89, 0.22);
+  border-radius: 8px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ac-ash);
+}
+
+select option {
+  background: var(--ac-ink-900);
+  color: var(--ac-cream);
+}
+
+/* In-room UI */
+.ui-controls .control-panel,
+.chat-panel,
+.shared-screen {
+  background: rgba(40,56,69, 0.94);
+  border: 1px solid rgba(242,149,89, 0.16);
+  color: var(--ac-cream);
+}
+
+.control-panel h4,
+.chat-header h4,
+.room-info h3 {
+  color: var(--ac-cream);
+}
+
+.movement-info p,
+.room-info span {
+  color: var(--ac-mist);
+}
+
+#controls-help .controls-content {
+  background: var(--ac-ink-800);
+  border: 1px solid rgba(242,149,89, 0.18);
+  color: var(--ac-cream);
+}
+
+kbd {
+  background: var(--ac-ink-600);
+  border: 1px solid rgba(242,149,89, 0.22);
+  color: var(--ac-cream);
+}
+
+/* On-screen arrow pad shown while inside a room */
+.ac-move-pad {
+  position: fixed;
+  bottom: 56px;
+  left: 18px;
+  z-index: 9000;
+  display: grid;
+  grid-template-columns: repeat(3, 42px);
+  grid-template-rows: repeat(2, 42px);
+  gap: 6px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(40,56,69, 0.9);
+  border: 1px solid rgba(242,149,89, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.ac-move-pad button {
+  border-radius: 10px;
+  border: 1px solid rgba(184,176,141, 0.3);
+  background: var(--ac-ink-700);
+  color: var(--ac-cream);
+  font-size: 16px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.ac-move-pad button:active {
+  background: var(--ac-beige);
+  color: var(--ac-ink-900);
+}
+
+.ac-move-pad .up { grid-column: 2; grid-row: 1; }
+.ac-move-pad .left { grid-column: 1; grid-row: 2; }
+.ac-move-pad .down { grid-column: 2; grid-row: 2; }
+.ac-move-pad .right { grid-column: 3; grid-row: 2; }
+
+.ac-move-hint {
+  position: fixed;
+  bottom: 56px;
+  left: 168px;
+  z-index: 9000;
+  max-width: 260px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(40,56,69, 0.9);
+  border: 1px solid rgba(242,149,89, 0.16);
+  color: var(--ac-mist);
+  font: 11px/1.5 Inter, sans-serif;
+}

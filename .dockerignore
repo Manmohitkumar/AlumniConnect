@@ -1,0 +1,15 @@
+node_modules
+**/node_modules
+dist
+.preview
+backups
+apps/api/uploads
+apps/api/prisma/*.db
+apps/api/prisma/*.db-journal
+apps/api/prisma/test.db
+.env
+.env.local
+*.log
+.git
+.github
+.tmp-*
