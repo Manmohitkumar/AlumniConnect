@@ -2,15 +2,11 @@ services:
   - type: web
     name: alumniconnect-api
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./apps/api/Dockerfile
     dockerContext: .
     healthCheckPath: /api/health
     autoDeployTrigger: commit
-    disk:
-      name: alumniconnect-uploads
-      mountPath: /data/uploads
-      sizeGB: 10
     envVars:
       - key: NODE_ENV
         value: production
@@ -23,7 +19,7 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: UPLOAD_DIR
-        value: /data/uploads
+        value: /tmp/alumniconnect-uploads
       - key: SEED_DEMO
         value: "false"
       - key: APP_URL
@@ -45,7 +41,7 @@ services:
   - type: web
     name: alumniconnect-web
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./apps/web/Dockerfile
     dockerContext: .
     healthCheckPath: /

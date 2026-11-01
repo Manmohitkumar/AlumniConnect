@@ -26,19 +26,27 @@ complete application on Render:
 
 - a Docker-based `alumniconnect-api` web service;
 - a Docker-based `alumniconnect-web` web service;
-- a managed PostgreSQL database; and
-- a persistent disk mounted at `/data/uploads`.
+- a managed PostgreSQL database.
 
 The web service is the public entry point. Its nginx proxy routes `/api`,
 `/uploads`, and the presence stream to `alumniconnect-api` over Render's
 private service network.
 
+### Free-tier limitations
+
+The Blueprint is configured for Render's free tier. The API stores uploads
+under `/tmp/alumniconnect-uploads` because persistent disks are not available
+on free web services. Uploaded files can disappear when the service restarts
+or is redeployed, and free services may spin down after inactivity. Upgrade
+the API to a paid plan and add a persistent disk before using this deployment
+for production uploads.
+
 ### Provision the full stack
 
 1. In Render, choose **New → Blueprint** and select this repository and the
    `main` branch.
-2. Review the two web services and the database from `render.yaml`. The API
-   disk requires a paid web plan.
+2. Review the two free web services and the database from `render.yaml`.
+   Accept the free-tier limitation that uploaded files are not durable.
 3. Set the synchronized API values before deploying:
    - `APP_URL`: the public Render web-service URL;
    - `PUBLIC_BASE_URL`: the public Render web-service URL;
@@ -67,7 +75,8 @@ Run these checks before announcing the deployment:
 2. Direct navigation and refresh work for all four login routes.
 3. Each seeded demo account logs in and reaches its role dashboard.
 4. Authenticated API requests return JSON rather than SPA HTML.
-5. An upload remains available after an API restart.
+5. Uploads work during the current service lifetime. Persistence after an API
+   restart requires a paid disk-backed API service.
 6. Email verification and password reset are tested if `SMTP_URL` is configured.
 
 ## Vercel frontend + Render API
