@@ -57,6 +57,19 @@ npm run dev          # API :4000 + web :5173 in parallel
 
 Configuration lives in `apps/api/.env` (see `apps/api/.env.example`). Never commit real secrets; the example file keeps VAPID and SMTP values empty.
 
+## Demo portal logins
+
+Run `npm run db:seed` before using these accounts. They are synthetic local-development accounts only and must not be used in a deployed environment.
+
+All four portals use the demo password `DemoPass123!`:
+
+| Portal | Email | Login route |
+| --- | --- | --- |
+| Student | `student1@example.edu` | `/student/login` |
+| Alumni | `meera.nair@example.edu` | `/alumni/login` |
+| University | `registrar@demo.edu` | `/university/login` |
+| Admin | `admin@example.edu` | `/admin/login` |
+
 ## Tests and verification
 
 ```bash
