@@ -42,6 +42,17 @@ services:
         sync: false
       - key: VAPID_SUBJECT
         value: mailto:ops@your-domain
+  - type: web
+    name: alumniconnect-web
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./apps/web/Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    autoDeployTrigger: commit
+    envVars:
+      - key: API_UPSTREAM
+        value: alumniconnect-api:4000
 
 databases:
   - name: alumniconnect-db

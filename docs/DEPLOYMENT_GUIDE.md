@@ -19,6 +19,57 @@ Notes and current limits:
 - The `backup` service writes verifier-compatible manifests; check one with `node tools/verify-backup.mjs backups/<manifest>.json`.
 - **Not verified on this machine:** Docker and `psql` are not installed, so the images, Compose stack, and nginx config have not been executed. `prisma validate` and offline DDL generation for the PostgreSQL schema do pass. Treat the first real deployment as a staging exercise.
 
+## Render full-stack deployment
+
+The repository includes [`render.yaml`](../render.yaml), which provisions the
+complete application on Render:
+
+- a Docker-based `alumniconnect-api` web service;
+- a Docker-based `alumniconnect-web` web service;
+- a managed PostgreSQL database; and
+- a persistent disk mounted at `/data/uploads`.
+
+The web service is the public entry point. Its nginx proxy routes `/api`,
+`/uploads`, and the presence stream to `alumniconnect-api` over Render's
+private service network.
+
+### Provision the full stack
+
+1. In Render, choose **New → Blueprint** and select this repository and the
+   `main` branch.
+2. Review the two web services and the database from `render.yaml`. The API
+   disk requires a paid web plan.
+3. Set the synchronized API values before deploying:
+   - `APP_URL`: the public Render web-service URL;
+   - `PUBLIC_BASE_URL`: the public Render web-service URL;
+   - `WEB_ORIGIN` and `WEB_ORIGINS`: the exact public Render web-service
+     origin; and
+   - `SMTP_URL`: a production SMTP relay if verification and password-reset
+     emails are required.
+4. Generate a public domain for `alumniconnect-web`. Do not expose the API
+   service publicly unless operational access requires it.
+5. Deploy and verify:
+
+   ```text
+   https://<render-web-host>/api/health
+   ```
+
+6. To make the documented demo accounts available, set `SEED_DEMO=true` for
+   one API deploy, verify the seed completed, then set it back to `false` and
+   redeploy. The demo credentials are synthetic and must not be used as
+   production credentials.
+
+### Production verification
+
+Run these checks before announcing the deployment:
+
+1. `GET /api/health` returns a healthy response through the web service.
+2. Direct navigation and refresh work for all four login routes.
+3. Each seeded demo account logs in and reaches its role dashboard.
+4. Authenticated API requests return JSON rather than SPA HTML.
+5. An upload remains available after an API restart.
+6. Email verification and password reset are tested if `SMTP_URL` is configured.
+
 ## Vercel frontend + Render API
 
 The Vercel project serves the React SPA. The API must run as a separate persistent
