@@ -25,14 +25,15 @@ function check(name, ok, detail = '') {
 const compose = read('docker-compose.yml')
 const envExample = read('deploy/.env.example')
 const docs = read('docs/ENVIRONMENT_CONFIGURATION.md')
-const nginx = read('deploy/nginx.conf')
+const nginx = read('deploy/nginx.template')
+const webDockerfile = read('apps/web/Dockerfile')
 const ci = read('.github/workflows/ci.yml')
 
 console.log('\nCompose structure')
 for (const service of ['db', 'api', 'web', 'backup', 'clamav']) {
   check(`service "${service}" is declared`, new RegExp(`^  ${service}:`, 'm').test(compose))
 }
-for (const file of ['apps/api/Dockerfile', 'apps/web/Dockerfile', 'deploy/nginx.conf', 'deploy/backup-loop.sh']) {
+for (const file of ['apps/api/Dockerfile', 'apps/web/Dockerfile', 'deploy/nginx.template', 'deploy/backup-loop.sh']) {
   check(`${file} exists`, fs.existsSync(path.join(root, file)))
 }
 
@@ -73,6 +74,7 @@ check('nginx proxies /api to the api service', nginx.includes('proxy_pass http:/
 check('nginx disables buffering for the presence stream', /location = \/api\/metaverse\/rooms\/stream[\s\S]*?proxy_buffering off;/.test(nginx))
 check('nginx caps upload size above the API limit', nginx.includes('client_max_body_size 22m'))
 check('nginx sends baseline security headers', nginx.includes('X-Content-Type-Options') && nginx.includes('X-Frame-Options'))
+check('nginx upstream is configurable for hosted platforms', nginx.includes('server ${API_UPSTREAM};') && webDockerfile.includes('NGINX_ENVSUBST_FILTER=API_UPSTREAM'))
 check('CI runs typecheck, build and tests', ['typecheck', 'build', 'test:unit', 'test:smoke'].every((step) => ci.includes(step)))
 check('CI does not hardcode credentials', !/password:\s*['"]?[A-Za-z0-9]{16,}/i.test(ci))
 
